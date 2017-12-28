@@ -1,14 +1,14 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 import random
 from utilities import dmvpn_utilities, guacamole_utilities
 
 app = Flask(__name__)
-
+title = "Demo Preparation"
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
-        return render_template('index.htm')
+        return render_template('index.htm',title=title)
     if request.method == 'POST':
         # Set up the "random" password
         cco_username = request.form.get("cconame")
@@ -18,7 +18,7 @@ def index():
         # Go update NHRP and guacamole passwords
         debug_log = [dmvpn_utilities.set_password(password=password),
                      guacamole_utilities.set_password(password=password)]
-        return render_template('set_password.htm', password=password, debug_log=debug_log)
+        return render_template('set_password.htm', password=password, debug_log=debug_log, title=title)
 
 
 if __name__ == "__main__":
